@@ -1,0 +1,7 @@
+# Ignore files and directories for Prettier formatting
+/node_modules
+/.vscode
+/dist
+
+# Environment variables
+*.env

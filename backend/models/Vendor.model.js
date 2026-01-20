@@ -50,7 +50,7 @@ const vendorSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 vendorSchema.index({ location: "2dsphere" });
