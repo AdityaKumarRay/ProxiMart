@@ -6,6 +6,9 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
+import cartRoutes from "./routes/cart.routes.js";
+import orderRoutes from "./routes/order.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 console.info("[App] express app initialized");
@@ -21,5 +24,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/cart", cartRoutes);
+app.use("/api/v1/orders", orderRoutes);
+
+// error handler last
+app.use(errorHandler);
 
 export default app;
