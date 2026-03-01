@@ -892,3 +892,323 @@ Authorization: Bearer <accessToken>
 | 404    | PROFILE_NOT_FOUND     | Vendor profile not found     |
 | 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
 | 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
+
+---
+
+## Order Endpoints
+
+### POST /orders
+
+Create a new order (CUSTOMER only). Uses an **ACID transaction** to atomically validate products, check stock, decrement inventory, and create the order with all items.
+
+**Auth:** Bearer token (CUSTOMER role required)
+
+**Request Body:**
+
+```json
+{
+  "vendorProfileId": "uuid",
+  "items": [
+    { "productId": "uuid", "quantity": 2 },
+    { "productId": "uuid", "quantity": 1 }
+  ],
+  "deliveryAddress": "456 Market Road, Delhi",
+  "notes": "Ring the bell (optional)"
+}
+```
+
+**Success Response (201):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "uuid",
+    "orderNumber": "PM-20260101-ABC123",
+    "customerProfileId": "uuid",
+    "vendorProfileId": "uuid",
+    "status": "PENDING",
+    "paymentStatus": "PENDING",
+    "totalAmount": 1260,
+    "paidAmount": 0,
+    "deliveryAddress": "456 Market Road, Delhi",
+    "notes": null,
+    "createdAt": "ISO timestamp",
+    "updatedAt": "ISO timestamp",
+    "items": [
+      {
+        "id": "uuid",
+        "productId": "uuid",
+        "name": "Basmati Rice 5kg",
+        "price": 450,
+        "quantity": 2,
+        "subtotal": 900
+      }
+    ],
+    "payments": [],
+    "receipt": null
+  },
+  "message": "Order created"
+}
+```
+
+**Error Responses:**
+
+| Status | Code                    | Message                                |
+| ------ | ----------------------- | -------------------------------------- |
+| 400    | VALIDATION_ERROR        | Invalid request body                   |
+| 400    | PRODUCT_VENDOR_MISMATCH | Product does not belong to this vendor |
+| 400    | PRODUCT_NOT_AVAILABLE   | Product is not available               |
+| 400    | INSUFFICIENT_STOCK      | Insufficient stock for product         |
+| 401    | AUTH_REQUIRED           | Authentication required                |
+| 403    | FORBIDDEN               | Customer role required                 |
+| 404    | PROFILE_NOT_FOUND       | Customer profile not found             |
+| 404    | VENDOR_NOT_FOUND        | Vendor profile not found               |
+| 404    | PRODUCT_NOT_FOUND       | Product not found                      |
+
+---
+
+### GET /orders
+
+List orders for the authenticated user. Customers see their orders; vendors see orders placed with them.
+
+**Auth:** Bearer token (any authenticated role)
+
+**Query Parameters:**
+
+| Param     | Type   | Default | Description                                      |
+| --------- | ------ | ------- | ------------------------------------------------ |
+| status    | string | —       | Filter by order status (e.g. PENDING, DELIVERED) |
+| page      | number | 1       | Page number (1-indexed)                          |
+| limit     | number | 20      | Items per page (1–100)                           |
+| sortOrder | string | desc    | Sort by createdAt: `asc` or `desc`               |
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "orders": [ ... ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 5,
+      "totalPages": 1
+    }
+  },
+  "message": "Orders retrieved"
+}
+```
+
+---
+
+### GET /orders/:orderId
+
+Get a single order with items, payments, and receipt.
+
+**Auth:** Bearer token (must be order's customer or vendor)
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": { "id": "uuid", "orderNumber": "...", "items": [...], "payments": [...], "receipt": null },
+  "message": "Order retrieved"
+}
+```
+
+**Error Responses:**
+
+| Status | Code             | Message                              |
+| ------ | ---------------- | ------------------------------------ |
+| 400    | VALIDATION_ERROR | Invalid orderId format               |
+| 401    | AUTH_REQUIRED    | Authentication required              |
+| 403    | FORBIDDEN        | You do not have access to this order |
+| 404    | ORDER_NOT_FOUND  | Order not found                      |
+
+---
+
+### PATCH /orders/:orderId/status
+
+Update order status (VENDOR only). Enforces valid transitions:
+
+```
+PENDING → CONFIRMED → PACKED → OUT_FOR_DELIVERY → DELIVERED
+PENDING/CONFIRMED/PACKED → CANCELLED
+```
+
+**Auth:** Bearer token (VENDOR role required, must own the order)
+
+**Request Body:**
+
+```json
+{
+  "status": "CONFIRMED"
+}
+```
+
+Valid values: `CONFIRMED`, `PACKED`, `OUT_FOR_DELIVERY`, `DELIVERED`
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": { "id": "uuid", "status": "CONFIRMED", ... },
+  "message": "Order status updated"
+}
+```
+
+**Error Responses:**
+
+| Status | Code                      | Message                               |
+| ------ | ------------------------- | ------------------------------------- |
+| 400    | INVALID_STATUS_TRANSITION | Cannot transition from X to Y         |
+| 400    | VALIDATION_ERROR          | Invalid status value                  |
+| 401    | AUTH_REQUIRED             | Authentication required               |
+| 403    | FORBIDDEN                 | Vendor role required / not your order |
+| 404    | PROFILE_NOT_FOUND         | Vendor profile not found              |
+| 404    | ORDER_NOT_FOUND           | Order not found                       |
+
+---
+
+### PATCH /orders/:orderId/cancel
+
+Cancel an order (CUSTOMER only). Only allowed before `OUT_FOR_DELIVERY`. Restores inventory atomically via ACID transaction.
+
+**Auth:** Bearer token (CUSTOMER role required, must own the order)
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": { "id": "uuid", "status": "CANCELLED", ... },
+  "message": "Order cancelled"
+}
+```
+
+**Error Responses:**
+
+| Status | Code                      | Message                                 |
+| ------ | ------------------------- | --------------------------------------- |
+| 400    | INVALID_STATUS_TRANSITION | Cannot cancel order in current status   |
+| 401    | AUTH_REQUIRED             | Authentication required                 |
+| 403    | FORBIDDEN                 | Customer role required / not your order |
+| 404    | PROFILE_NOT_FOUND         | Customer profile not found              |
+| 404    | ORDER_NOT_FOUND           | Order not found                         |
+
+---
+
+### POST /orders/:orderId/payments
+
+Record a payment for an order. Supports **partial payments**. Updates `paidAmount` and `paymentStatus` (PARTIAL → PAID).
+
+**Auth:** Bearer token (must be order's customer or vendor)
+
+**Request Body:**
+
+```json
+{
+  "amount": 600,
+  "method": "UPI",
+  "reference": "upi-txn-123 (optional)"
+}
+```
+
+Valid methods: `COD`, `UPI`, `WALLET`
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": { "id": "uuid", "paidAmount": 600, "paymentStatus": "PARTIAL", "payments": [...], ... },
+  "message": "Payment recorded"
+}
+```
+
+**Error Responses:**
+
+| Status | Code                    | Message                                   |
+| ------ | ----------------------- | ----------------------------------------- |
+| 400    | VALIDATION_ERROR        | Invalid request body                      |
+| 400    | ORDER_CANCELLED         | Cannot record payment for cancelled order |
+| 400    | ALREADY_PAID            | Order is already fully paid               |
+| 400    | PAYMENT_EXCEEDS_BALANCE | Payment exceeds remaining balance         |
+| 401    | AUTH_REQUIRED           | Authentication required                   |
+| 403    | FORBIDDEN               | No access to this order                   |
+| 404    | ORDER_NOT_FOUND         | Order not found                           |
+
+---
+
+### POST /orders/:orderId/receipt
+
+Generate a receipt for a delivered order (VENDOR only). One receipt per order.
+
+**Auth:** Bearer token (VENDOR role required, must own the order)
+
+**Success Response (201):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "uuid",
+    "orderId": "uuid",
+    "receiptNumber": "RCP-20260101-ABC123",
+    "totalAmount": 1260,
+    "paidAmount": 1260,
+    "issuedAt": "ISO timestamp"
+  },
+  "message": "Receipt generated"
+}
+```
+
+**Error Responses:**
+
+| Status | Code                | Message                               |
+| ------ | ------------------- | ------------------------------------- |
+| 400    | ORDER_NOT_DELIVERED | Receipt only for delivered orders     |
+| 401    | AUTH_REQUIRED       | Authentication required               |
+| 403    | FORBIDDEN           | Vendor role required / not your order |
+| 404    | PROFILE_NOT_FOUND   | Vendor profile not found              |
+| 404    | ORDER_NOT_FOUND     | Order not found                       |
+| 409    | RECEIPT_EXISTS      | Receipt already exists for this order |
+
+---
+
+### GET /orders/:orderId/receipt
+
+Get the receipt for an order.
+
+**Auth:** Bearer token (must be order's customer or vendor)
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "uuid",
+    "orderId": "uuid",
+    "receiptNumber": "RCP-20260101-ABC123",
+    "totalAmount": 1260,
+    "paidAmount": 1260,
+    "issuedAt": "ISO timestamp"
+  },
+  "message": "Receipt retrieved"
+}
+```
+
+**Error Responses:**
+
+| Status | Code              | Message                          |
+| ------ | ----------------- | -------------------------------- |
+| 400    | VALIDATION_ERROR  | Invalid orderId format           |
+| 401    | AUTH_REQUIRED     | Authentication required          |
+| 403    | FORBIDDEN         | No access to this order          |
+| 404    | ORDER_NOT_FOUND   | Order not found                  |
+| 404    | RECEIPT_NOT_FOUND | Receipt not found for this order |

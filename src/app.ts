@@ -9,6 +9,7 @@ import { authRouter } from './modules/auth/auth.router.js';
 import { vendorRouter } from './modules/vendors/vendor.router.js';
 import { customerRouter } from './modules/customers/customer.router.js';
 import { productRouter } from './modules/products/product.router.js';
+import { orderRouter } from './modules/orders/order.router.js';
 import { AppError } from './utils/appError.js';
 
 /**
@@ -38,6 +39,7 @@ app.use(authRouter);
 app.use(vendorRouter);
 app.use(customerRouter);
 app.use(productRouter);
+app.use(orderRouter);
 
 // ----- 404 handler -----
 app.use((_req, _res, next) => {
