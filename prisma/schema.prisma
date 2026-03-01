@@ -1,0 +1,16 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Models will be added in subsequent milestones:
+// - Milestone 2: User (Vendor + Customer auth)
+// - Milestone 4: Product, Inventory
+// - Milestone 5: Order, Receipt, Payment
