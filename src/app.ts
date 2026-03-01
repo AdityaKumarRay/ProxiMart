@@ -6,6 +6,8 @@ import { generalLimiter } from './middlewares/rateLimiter.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { healthRouter } from './modules/health/health.router.js';
 import { authRouter } from './modules/auth/auth.router.js';
+import { vendorRouter } from './modules/vendors/vendor.router.js';
+import { customerRouter } from './modules/customers/customer.router.js';
 import { AppError } from './utils/appError.js';
 
 /**
@@ -32,6 +34,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // ----- Routes -----
 app.use(healthRouter);
 app.use(authRouter);
+app.use(vendorRouter);
+app.use(customerRouter);
 
 // ----- 404 handler -----
 app.use((_req, _res, next) => {
