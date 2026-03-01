@@ -30,5 +30,53 @@ model User {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
+  vendorProfile   VendorProfile?
+  customerProfile CustomerProfile?
+
   @@map("users")
+}
+
+/// Vendor-specific profile with shop details and location.
+/// One-to-one relation with User (role = VENDOR).
+model VendorProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique @map("user_id")
+  shopName        String   @map("shop_name")
+  description     String?
+  address         String
+  city            String
+  state           String
+  pincode         String
+  gstNumber       String?  @map("gst_number")
+  latitude        Float?
+  longitude       Float?
+  deliveryRadius  Float    @default(5.0) @map("delivery_radius")
+  isOpen          Boolean  @default(false) @map("is_open")
+  openingTime     String?  @map("opening_time")
+  closingTime     String?  @map("closing_time")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("vendor_profiles")
+}
+
+/// Customer-specific profile with delivery address and location.
+/// One-to-one relation with User (role = CUSTOMER).
+model CustomerProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique @map("user_id")
+  address   String?
+  city      String?
+  state     String?
+  pincode   String?
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("customer_profiles")
 }
