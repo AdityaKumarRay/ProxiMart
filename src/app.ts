@@ -8,6 +8,7 @@ import { healthRouter } from './modules/health/health.router.js';
 import { authRouter } from './modules/auth/auth.router.js';
 import { vendorRouter } from './modules/vendors/vendor.router.js';
 import { customerRouter } from './modules/customers/customer.router.js';
+import { productRouter } from './modules/products/product.router.js';
 import { AppError } from './utils/appError.js';
 
 /**
@@ -36,6 +37,7 @@ app.use(healthRouter);
 app.use(authRouter);
 app.use(vendorRouter);
 app.use(customerRouter);
+app.use(productRouter);
 
 // ----- 404 handler -----
 app.use((_req, _res, next) => {
