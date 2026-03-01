@@ -1,7 +1,7 @@
 # ProxiMart API Specification
 
 **Base URL:** `https://api.proximart.store/v1`  
-**Last updated:** 2026-03-02T01:00:00Z
+**Last updated:** 2026-03-02T03:00:00Z
 
 ---
 
@@ -318,14 +318,14 @@ Authorization: Bearer <accessToken>
 
 **Errors:**
 
-| Status | Code                  | Message                            |
-| ------ | --------------------- | ---------------------------------- |
-| 401    | AUTH_REQUIRED         | Authentication required            |
-| 401    | INVALID_TOKEN         | Invalid or expired token           |
-| 403    | FORBIDDEN             | Insufficient permissions           |
-| 404    | PROFILE_NOT_FOUND     | Vendor profile not found           |
-| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                  |
-| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred       |
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 401    | AUTH_REQUIRED         | Authentication required      |
+| 401    | INVALID_TOKEN         | Invalid or expired token     |
+| 403    | FORBIDDEN             | Insufficient permissions     |
+| 404    | PROFILE_NOT_FOUND     | Vendor profile not found     |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
 
 ---
 
@@ -361,21 +361,21 @@ Authorization: Bearer <accessToken>
 }
 ```
 
-| Field          | Type    | Required | Description                              |
-| -------------- | ------- | -------- | ---------------------------------------- |
-| shopName       | string  | Yes      | Shop/store name (1-200 chars)            |
-| description    | string  | No       | Shop description (max 1000 chars)        |
-| address        | string  | Yes      | Full address (1-500 chars)               |
-| city           | string  | Yes      | City name (1-100 chars)                  |
-| state          | string  | Yes      | State name (1-100 chars)                 |
-| pincode        | string  | Yes      | 6-digit Indian pincode                   |
-| gstNumber      | string  | No       | Valid GST number                         |
-| latitude       | number  | No       | Latitude (-90 to 90)                     |
-| longitude      | number  | No       | Longitude (-180 to 180)                  |
-| deliveryRadius | number  | No       | Delivery radius in km (0.5-50, default 5)|
-| isOpen         | boolean | No       | Shop open status (default false)         |
-| openingTime    | string  | No       | Opening time in HH:MM format             |
-| closingTime    | string  | No       | Closing time in HH:MM format             |
+| Field          | Type    | Required | Description                               |
+| -------------- | ------- | -------- | ----------------------------------------- |
+| shopName       | string  | Yes      | Shop/store name (1-200 chars)             |
+| description    | string  | No       | Shop description (max 1000 chars)         |
+| address        | string  | Yes      | Full address (1-500 chars)                |
+| city           | string  | Yes      | City name (1-100 chars)                   |
+| state          | string  | Yes      | State name (1-100 chars)                  |
+| pincode        | string  | Yes      | 6-digit Indian pincode                    |
+| gstNumber      | string  | No       | Valid GST number                          |
+| latitude       | number  | No       | Latitude (-90 to 90)                      |
+| longitude      | number  | No       | Longitude (-180 to 180)                   |
+| deliveryRadius | number  | No       | Delivery radius in km (0.5-50, default 5) |
+| isOpen         | boolean | No       | Shop open status (default false)          |
+| openingTime    | string  | No       | Opening time in HH:MM format              |
+| closingTime    | string  | No       | Closing time in HH:MM format              |
 
 **Response (201):**
 
@@ -389,14 +389,14 @@ Authorization: Bearer <accessToken>
 
 **Errors:**
 
-| Status | Code                  | Message                            |
-| ------ | --------------------- | ---------------------------------- |
-| 400    | VALIDATION_ERROR      | Invalid input (see details)        |
-| 401    | AUTH_REQUIRED         | Authentication required            |
-| 403    | FORBIDDEN             | Insufficient permissions           |
-| 409    | PROFILE_EXISTS        | Vendor profile already exists      |
-| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                  |
-| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred       |
+| Status | Code                  | Message                       |
+| ------ | --------------------- | ----------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)   |
+| 401    | AUTH_REQUIRED         | Authentication required       |
+| 403    | FORBIDDEN             | Insufficient permissions      |
+| 409    | PROFILE_EXISTS        | Vendor profile already exists |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests             |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred  |
 
 ---
 
@@ -426,14 +426,14 @@ Authorization: Bearer <accessToken>
 
 **Errors:**
 
-| Status | Code                  | Message                            |
-| ------ | --------------------- | ---------------------------------- |
-| 400    | VALIDATION_ERROR      | Invalid input (see details)        |
-| 401    | AUTH_REQUIRED         | Authentication required            |
-| 403    | FORBIDDEN             | Insufficient permissions           |
-| 404    | PROFILE_NOT_FOUND     | Vendor profile not found           |
-| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                  |
-| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred       |
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)  |
+| 401    | AUTH_REQUIRED         | Authentication required      |
+| 403    | FORBIDDEN             | Insufficient permissions     |
+| 404    | PROFILE_NOT_FOUND     | Vendor profile not found     |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
 
 ---
 
@@ -478,14 +478,14 @@ Authorization: Bearer <accessToken>
 
 **Errors:**
 
-| Status | Code                  | Message                            |
-| ------ | --------------------- | ---------------------------------- |
-| 401    | AUTH_REQUIRED         | Authentication required            |
-| 401    | INVALID_TOKEN         | Invalid or expired token           |
-| 403    | FORBIDDEN             | Insufficient permissions           |
-| 404    | PROFILE_NOT_FOUND     | Customer profile not found         |
-| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                  |
-| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred       |
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 401    | AUTH_REQUIRED         | Authentication required      |
+| 401    | INVALID_TOKEN         | Invalid or expired token     |
+| 403    | FORBIDDEN             | Insufficient permissions     |
+| 404    | PROFILE_NOT_FOUND     | Customer profile not found   |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
 
 ---
 
@@ -514,14 +514,14 @@ Authorization: Bearer <accessToken>
 }
 ```
 
-| Field     | Type   | Required | Description                 |
-| --------- | ------ | -------- | --------------------------- |
-| address   | string | No       | Delivery address (max 500)  |
-| city      | string | No       | City name (max 100)         |
-| state     | string | No       | State name (max 100)        |
-| pincode   | string | No       | 6-digit Indian pincode      |
-| latitude  | number | No       | Latitude (-90 to 90)        |
-| longitude | number | No       | Longitude (-180 to 180)     |
+| Field     | Type   | Required | Description                |
+| --------- | ------ | -------- | -------------------------- |
+| address   | string | No       | Delivery address (max 500) |
+| city      | string | No       | City name (max 100)        |
+| state     | string | No       | State name (max 100)       |
+| pincode   | string | No       | 6-digit Indian pincode     |
+| latitude  | number | No       | Latitude (-90 to 90)       |
+| longitude | number | No       | Longitude (-180 to 180)    |
 
 **Response (201):**
 
@@ -535,14 +535,14 @@ Authorization: Bearer <accessToken>
 
 **Errors:**
 
-| Status | Code                  | Message                            |
-| ------ | --------------------- | ---------------------------------- |
-| 400    | VALIDATION_ERROR      | Invalid input (see details)        |
-| 401    | AUTH_REQUIRED         | Authentication required            |
-| 403    | FORBIDDEN             | Insufficient permissions           |
-| 409    | PROFILE_EXISTS        | Customer profile already exists    |
-| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                  |
-| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred       |
+| Status | Code                  | Message                         |
+| ------ | --------------------- | ------------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)     |
+| 401    | AUTH_REQUIRED         | Authentication required         |
+| 403    | FORBIDDEN             | Insufficient permissions        |
+| 409    | PROFILE_EXISTS        | Customer profile already exists |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests               |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred    |
 
 ---
 
@@ -572,11 +572,323 @@ Authorization: Bearer <accessToken>
 
 **Errors:**
 
-| Status | Code                  | Message                            |
-| ------ | --------------------- | ---------------------------------- |
-| 400    | VALIDATION_ERROR      | Invalid input (see details)        |
-| 401    | AUTH_REQUIRED         | Authentication required            |
-| 403    | FORBIDDEN             | Insufficient permissions           |
-| 404    | PROFILE_NOT_FOUND     | Customer profile not found         |
-| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                  |
-| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred       |
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)  |
+| 401    | AUTH_REQUIRED         | Authentication required      |
+| 403    | FORBIDDEN             | Insufficient permissions     |
+| 404    | PROFILE_NOT_FOUND     | Customer profile not found   |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
+
+---
+
+## Product Endpoints
+
+### `GET /products`
+
+List products with optional filters and pagination. Public endpoint — no authentication required.
+
+**Rate Limit:** General (100 req / 15 min)
+
+**Query Parameters:**
+
+| Parameter       | Type   | Required | Description                                       |
+| --------------- | ------ | -------- | ------------------------------------------------- |
+| vendorProfileId | string | No       | Filter by vendor profile ID (UUID)                |
+| categoryId      | string | No       | Filter by category ID (UUID)                      |
+| search          | string | No       | Search products by name (case-insensitive)        |
+| minPrice        | number | No       | Minimum price filter                              |
+| maxPrice        | number | No       | Maximum price filter                              |
+| available       | string | No       | Filter by availability (`true`/`false`)           |
+| page            | number | No       | Page number (default: 1)                          |
+| limit           | number | No       | Items per page (1-100, default: 20)               |
+| sortBy          | enum   | No       | Sort field: `name`, `price`, `createdAt`, `stock` |
+| sortOrder       | enum   | No       | Sort order: `asc` or `desc` (default: `desc`)     |
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "products": [
+      {
+        "id": "uuid",
+        "vendorProfileId": "uuid",
+        "categoryId": "uuid",
+        "name": "Basmati Rice 5kg",
+        "description": "Premium aged basmati rice",
+        "price": 450,
+        "unit": "bag",
+        "imageUrl": null,
+        "stock": 25,
+        "lowStockThreshold": 10,
+        "isAvailable": true,
+        "createdAt": "2026-01-01T00:00:00.000Z",
+        "updatedAt": "2026-01-01T00:00:00.000Z",
+        "category": { "id": "uuid", "name": "Groceries" }
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 1,
+      "totalPages": 1
+    }
+  },
+  "message": "Products retrieved"
+}
+```
+
+**Errors:**
+
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)  |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
+
+---
+
+### `GET /products/:productId`
+
+Get a single product by ID. Public endpoint — no authentication required.
+
+**Rate Limit:** General (100 req / 15 min)
+
+**Path Parameters:**
+
+| Parameter | Type   | Required | Description       |
+| --------- | ------ | -------- | ----------------- |
+| productId | string | Yes      | Product ID (UUID) |
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "uuid",
+    "vendorProfileId": "uuid",
+    "categoryId": "uuid",
+    "name": "Basmati Rice 5kg",
+    "description": "Premium aged basmati rice",
+    "price": 450,
+    "unit": "bag",
+    "imageUrl": null,
+    "stock": 25,
+    "lowStockThreshold": 10,
+    "isAvailable": true,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "category": { "id": "uuid", "name": "Groceries" }
+  },
+  "message": "Product retrieved"
+}
+```
+
+**Errors:**
+
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid product ID           |
+| 404    | PRODUCT_NOT_FOUND     | Product not found            |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |
+
+---
+
+### `POST /products`
+
+Create a new product. Requires authentication with `VENDOR` role.
+
+**Rate Limit:** General (100 req / 15 min)
+
+**Headers:**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Request Body:**
+
+```json
+{
+  "name": "Basmati Rice 5kg",
+  "description": "Premium aged basmati rice",
+  "price": 450,
+  "unit": "bag",
+  "categoryId": "uuid",
+  "stock": 25,
+  "lowStockThreshold": 10,
+  "isAvailable": true,
+  "imageUrl": "https://example.com/rice.jpg"
+}
+```
+
+| Field             | Type    | Required | Description                             |
+| ----------------- | ------- | -------- | --------------------------------------- |
+| name              | string  | Yes      | Product name (1-200 chars)              |
+| description       | string  | No       | Product description (max 2000 chars)    |
+| price             | number  | Yes      | Price (positive, max 1,000,000)         |
+| unit              | string  | No       | Unit of measurement (default: "piece")  |
+| categoryId        | string  | No       | Category UUID                           |
+| stock             | integer | No       | Stock quantity (default: 0)             |
+| lowStockThreshold | integer | No       | Low stock alert threshold (default: 10) |
+| isAvailable       | boolean | No       | Availability status (default: true)     |
+| imageUrl          | string  | No       | Product image URL                       |
+
+**Response (201):**
+
+```json
+{
+  "success": true,
+  "data": { "...product object with category..." },
+  "message": "Product created"
+}
+```
+
+**Errors:**
+
+| Status | Code                  | Message                                         |
+| ------ | --------------------- | ----------------------------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)                     |
+| 401    | AUTH_REQUIRED         | Authentication required                         |
+| 403    | FORBIDDEN             | Insufficient permissions                        |
+| 404    | PROFILE_NOT_FOUND     | Vendor profile not found — create profile first |
+| 404    | CATEGORY_NOT_FOUND    | Category not found                              |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                               |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred                    |
+
+---
+
+### `PATCH /products/:productId`
+
+Update a product. Only the owning vendor can update. Requires `VENDOR` role.
+
+**Rate Limit:** General (100 req / 15 min)
+
+**Headers:**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Path Parameters:**
+
+| Parameter | Type   | Required | Description       |
+| --------- | ------ | -------- | ----------------- |
+| productId | string | Yes      | Product ID (UUID) |
+
+**Request Body:** Any subset of the POST fields. All fields are optional. Nullable fields (`description`, `imageUrl`, `categoryId`) can be set to `null`.
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": { "...updated product object..." },
+  "message": "Product updated"
+}
+```
+
+**Errors:**
+
+| Status | Code                  | Message                               |
+| ------ | --------------------- | ------------------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid input (see details)           |
+| 401    | AUTH_REQUIRED         | Authentication required               |
+| 403    | FORBIDDEN             | You can only update your own products |
+| 404    | PROFILE_NOT_FOUND     | Vendor profile not found              |
+| 404    | PRODUCT_NOT_FOUND     | Product not found                     |
+| 404    | CATEGORY_NOT_FOUND    | Category not found                    |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                     |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred          |
+
+---
+
+### `DELETE /products/:productId`
+
+Delete a product. Only the owning vendor can delete. Requires `VENDOR` role.
+
+**Rate Limit:** General (100 req / 15 min)
+
+**Headers:**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Path Parameters:**
+
+| Parameter | Type   | Required | Description       |
+| --------- | ------ | -------- | ----------------- |
+| productId | string | Yes      | Product ID (UUID) |
+
+**Request Body:** None required.
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": null,
+  "message": "Product deleted"
+}
+```
+
+**Errors:**
+
+| Status | Code                  | Message                               |
+| ------ | --------------------- | ------------------------------------- |
+| 400    | VALIDATION_ERROR      | Invalid product ID                    |
+| 401    | AUTH_REQUIRED         | Authentication required               |
+| 403    | FORBIDDEN             | You can only delete your own products |
+| 404    | PROFILE_NOT_FOUND     | Vendor profile not found              |
+| 404    | PRODUCT_NOT_FOUND     | Product not found                     |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests                     |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred          |
+
+---
+
+### `GET /products/low-stock`
+
+Get products with stock at or below their low-stock threshold. Requires authentication with `VENDOR` role. Only returns the authenticated vendor's products.
+
+**Rate Limit:** General (100 req / 15 min)
+
+**Headers:**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Request:** No body required.
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Basmati Rice 5kg",
+      "stock": 3,
+      "lowStockThreshold": 10
+    }
+  ],
+  "message": "Low-stock products retrieved"
+}
+```
+
+**Errors:**
+
+| Status | Code                  | Message                      |
+| ------ | --------------------- | ---------------------------- |
+| 401    | AUTH_REQUIRED         | Authentication required      |
+| 403    | FORBIDDEN             | Insufficient permissions     |
+| 404    | PROFILE_NOT_FOUND     | Vendor profile not found     |
+| 429    | RATE_LIMIT_EXCEEDED   | Too many requests            |
+| 500    | INTERNAL_SERVER_ERROR | An unexpected error occurred |

@@ -57,7 +57,8 @@ model VendorProfile {
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
 
   @@map("vendor_profiles")
 }
@@ -79,4 +80,44 @@ model CustomerProfile {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("customer_profiles")
+}
+
+/// Product category for organizing products.
+/// Categories are global (not per-vendor).
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+/// Product listed by a vendor with inventory tracking.
+/// Belongs to a VendorProfile and optionally a Category.
+model Product {
+  id                String   @id @default(uuid())
+  vendorProfileId   String   @map("vendor_profile_id")
+  categoryId        String?  @map("category_id")
+  name              String
+  description       String?
+  price             Float
+  unit              String   @default("piece")
+  imageUrl          String?  @map("image_url")
+  stock             Int      @default(0)
+  lowStockThreshold Int      @default(10) @map("low_stock_threshold")
+  isAvailable       Boolean  @default(true) @map("is_available")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  vendorProfile VendorProfile @relation(fields: [vendorProfileId], references: [id], onDelete: Cascade)
+  category      Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([vendorProfileId])
+  @@index([categoryId])
+  @@index([name])
+  @@map("products")
 }
