@@ -5,6 +5,7 @@ import { env } from './config/env.js';
 import { generalLimiter } from './middlewares/rateLimiter.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { healthRouter } from './modules/health/health.router.js';
+import { authRouter } from './modules/auth/auth.router.js';
 import { AppError } from './utils/appError.js';
 
 /**
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ----- Routes -----
 app.use(healthRouter);
+app.use(authRouter);
 
 // ----- 404 handler -----
 app.use((_req, _res, next) => {

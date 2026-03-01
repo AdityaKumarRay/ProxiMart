@@ -10,7 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Models will be added in subsequent milestones:
-// - Milestone 2: User (Vendor + Customer auth)
-// - Milestone 4: Product, Inventory
-// - Milestone 5: Order, Receipt, Payment
+/// User roles in the ProxiMart ecosystem
+enum Role {
+  VENDOR
+  CUSTOMER
+}
+
+/// Core user model for authentication.
+/// Shared between vendors and customers — differentiated by role.
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  password       String
+  name           String
+  phone          String?
+  role           Role
+  refreshToken   String?  @map("refresh_token")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
